@@ -56,12 +56,24 @@ General.prototype.toField=function () {
 }
 
 function Field(deck){
-    this.deck=deck;
+    this.deck=deck
+    this.shuffledeck();
+    this.graveyard=[];
+    this.monsters=[];
+    this.spelltrap=[];
+    this.hand=[];
+    this.hand[0]=this.deck.shift();
+    this.hand[1]=this.deck.shift();
+    this.hand[2]=this.deck.shift();
+    this.hand[3]=this.deck.shift();
+    this.hand[4]=this.deck.shift();
+    for(var i=0;i<this.hand.length;i++){
+        console.log(i+" "+this.hand[i].name);
+
+    }
+    console.log("hand was drawn successfully");
 }
-Field.prototype.monsters=[];
-Field.prototype.spelltrap=[];
-Field.prototype.graveyard=[];
-Field.prototype.hand=[];
+
 Field.prototype.shuffledeck=function () {
     var i = 0
         , j = 0
@@ -79,19 +91,7 @@ Field.prototype.shuffledeck=function () {
     }
     console.log("deck was shuffled successfully");
 }
-Field.prototype.draw5=function () {
-    this.shuffledeck();
-    this.hand[0]=this.deck.shift();
-    this.hand[1]=this.deck.shift();
-    this.hand[2]=this.deck.shift();
-    this.hand[3]=this.deck.shift();
-    this.hand[4]=this.deck.shift();
-    for(var i=0;i<this.hand.length;i++){
-        console.log(i+" "+this.hand[i].name);
 
-    }
-    console.log("hand was drawn successfully");
-}
 
 function Player(name,field){
     this.name=name;
@@ -111,16 +111,48 @@ function makeDeckOne(){
         console.log(i+" "+deckOne[i].name);
 
     }
-    console.log("deck was made successfully");
+    console.log("deck 1 was made successfully");
     return deckOne;
-
-
-
 }
-var playerDeck=makeDeckOne();
-var playerField=new Field(playerDeck);
-var player1=new Player("nanter",playerField);
-player1.field.draw5();
-for(var i=0;i<player1.field.hand.length;i++){
-    document.write(player1.field.hand[i].name +"<br>");
+
+function makeDeckTwo(){
+    var deckTwo=[];
+    for(var i=0;i<10;i++){
+        deckTwo.push(new Soldier());
+    }
+    for(var i=0;i<2;i++){
+        deckTwo.push(new General());
+    }
+    for(var i=0;i<deckTwo.length;i++){
+        console.log(i+" "+deckTwo[i].name);
+
+    }
+    console.log("deck 2 was made successfully");
+    return deckTwo;
+}
+
+function setUpGame() {
+    players=[];
+    var playerDeck=makeDeckOne();
+    var computerDeck=makeDeckTwo();
+    var playerField=new Field(playerDeck);
+    var computerField=new Field(computerDeck);
+
+    var player1=new Player("nanter",playerField);
+    var playerCom=new Player("com",computerField);
+    console.log(player1);
+    console.log(playerCom);
+    players.push(player1);
+    players.push(playerCom);
+    return players;
+}
+var players=setUpGame();
+var playerOne=players[0];
+var playerCom=players[1];
+for(var i=0;i<playerOne.field.hand.length;i++){
+    document.write(playerOne.field.hand[i].name +"<br>");
+}
+document.write("<br>");
+for(var i=0;i<playerCom.field.hand.length;i++){
+    document.write(playerCom.field.hand[i].name +"<br>");
 }
