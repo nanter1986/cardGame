@@ -1,0 +1,14 @@
+.filedSlot{
+    width: 200px;
+    height: 300px;
+    background: saddlebrown;
+    display: inline-block;
+}
+
+div{
+    background: black;
+}
+
+#comHand,#plHand{
+    background: red;
+}
