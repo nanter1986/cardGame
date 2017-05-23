@@ -1,15 +1,15 @@
 function Card(name) {
     this.name;
 }
-Card.prototype.toGrave = function (area, index) {
-    player.field.graveyard.push()
-}
+Card.prototype.toGrave = function (field, index) {
+    field.graveyard.push(field.monsters[index].shift());
+};
 Card.prototype.toHand = function () {
     document.write("im back");
-}
+};
 Card.prototype.toDeck = function () {
     document.write("im sleepy");
-}
+};
 
 function Monster(name, attack) {
     this.name = name;
@@ -18,7 +18,7 @@ function Monster(name, attack) {
 Monster.prototype = new Card();
 Monster.prototype.toField = function () {
     document.write("ready to fight<br>");
-}
+};
 
 function Spell(name, effect) {
     this.name = name;
@@ -27,7 +27,7 @@ function Spell(name, effect) {
 Spell.prototype = new Card();
 Spell.prototype.toField = function () {
 
-}
+};
 
 function Trap(name, effect) {
     this.name = name;
@@ -36,7 +36,7 @@ function Trap(name, effect) {
 Trap.prototype = new Card();
 Trap.prototype.toField = function () {
 
-}
+};
 
 function Soldier() {
 
@@ -53,10 +53,28 @@ General.prototype.name = "general";
 General.prototype.attack = 3;
 General.prototype.toField = function () {
     document.write("im ready to dominate<br>");
+};
+function BlackHole() {
+
 }
+BlackHole.prototype=new Spell();
+BlackHole.prototype.name="Black Hole";
+BlackHole.prototype.effect=function (field1, field2) {
+    for(var i=0;i<field1.monsters.length;i++){
+        if(field1.monsters[i]!=undefined){
+            this.toGrave(field1,i);
+        }
+    }
+    for(var j=0;i<field2.monsters.length;i++){
+        if(field2.monsters[j]!=undefined){
+            this.toGrave(field2,i);
+        }
+    }
+};
+
 
 function Field(deck) {
-    this.deck = deck
+    this.deck = deck;
     this.shuffledeck();
     this.graveyard = [];
     this.monsters = [];
@@ -80,9 +98,9 @@ Field.prototype.shuffledeck = function () {
         , temp = null;
 
     for (i = this.deck.length - 1; i > 0; i -= 1) {
-        j = Math.floor(Math.random() * (i + 1))
-        temp = this.deck[i]
-        this.deck[i] = this.deck[j]
+        j = Math.floor(Math.random() * (i + 1));
+        temp = this.deck[i];
+        this.deck[i] = this.deck[j];
         this.deck[j] = temp
     }
     for (var i = 0; i < this.deck.length; i++) {
@@ -90,7 +108,7 @@ Field.prototype.shuffledeck = function () {
 
     }
     console.log("deck was shuffled successfully");
-}
+};
 
 
 function Player(name, field) {
@@ -101,10 +119,12 @@ function Player(name, field) {
         var name = this.field.hand[index].name;
         var attack = this.field.hand[index].attack;
         slot.innerHTML = name + "<br>" + attack;
-    }
+    };
     this.displayCards = function () {
         if (this.name == "com") {
-
+            this.showOneCard("handCom1", 0);
+            this.showOneCard("handCom2", 1);
+            this.showOneCard("handCom3", 2);
         } else {
             this.showOneCard("handPl1", 0);
             this.showOneCard("handPl2", 1);
@@ -128,6 +148,7 @@ function makeDeckOne() {
         console.log(i + " " + deckOne[i].name);
 
     }
+
     console.log("deck 1 was made successfully");
     return deckOne;
 }
@@ -167,4 +188,5 @@ var players = setUpGame();
 var playerOne = players[0];
 var playerCom = players[1];
 playerOne.displayCards();
+playerCom.displayCards();
 
