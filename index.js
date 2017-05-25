@@ -114,6 +114,7 @@ Field.prototype.shuffledeck = function () {
 function Player(name, field) {
     this.name = name;
     this.field = field;
+    this.lifepoints=10;
     this.showOneCard = function (id, index) {
         var slot = document.getElementById(id);
         var name = this.field.hand[index].name;
@@ -133,10 +134,10 @@ function Player(name, field) {
         }
     }
 }
-Player.prototype.lifepoints = 10;
 
 
-function makeDeckOne() {
+
+function makeaDeck() {
     var deckOne = [];
     for (var i = 0; i < 10; i++) {
         deckOne.push(new Soldier());
@@ -149,30 +150,15 @@ function makeDeckOne() {
 
     }
 
-    console.log("deck 1 was made successfully");
+    console.log("deck was made successfully");
     return deckOne;
 }
 
-function makeDeckTwo() {
-    var deckTwo = [];
-    for (var i = 0; i < 10; i++) {
-        deckTwo.push(new Soldier());
-    }
-    for (var i = 0; i < 2; i++) {
-        deckTwo.push(new General());
-    }
-    for (var i = 0; i < deckTwo.length; i++) {
-        console.log(i + " " + deckTwo[i].name);
-
-    }
-    console.log("deck 2 was made successfully");
-    return deckTwo;
-}
 
 function setUpGame() {
     players = [];
-    var playerDeck = makeDeckOne();
-    var computerDeck = makeDeckTwo();
+    var playerDeck = makeaDeck();
+    var computerDeck = makeaDeck();
     var playerField = new Field(playerDeck);
     var computerField = new Field(computerDeck);
 
@@ -184,9 +170,21 @@ function setUpGame() {
     players.push(playerCom);
     return players;
 }
+
+
+
+
 var players = setUpGame();
 var playerOne = players[0];
 var playerCom = players[1];
 playerOne.displayCards();
 playerCom.displayCards();
 
+function clickHandp1m() {
+    console.log(playerOne.field.hand[0].name);
+    var toAdd=playerOne.field.hand.splice(0,1);
+    playerOne.field.monsters.push(toAdd[0]);
+    console.log(playerOne.field.hand[0].name);
+    console.log(toAdd[0].name);
+    playerOne.showOneCard("mPl1", 0);
+}
