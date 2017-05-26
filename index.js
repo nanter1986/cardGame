@@ -111,10 +111,12 @@ Field.prototype.shuffledeck = function () {
 };
 
 
-function Player(name, field) {
+function Player(name, field,buttonActivity) {
     this.name = name;
     this.field = field;
     this.lifepoints=10;
+    this.buttonsActive=buttonActivity;
+
     this.showOneCard = function (id, index) {
         var slot = document.getElementById(id);
         var name = this.field.hand[index].name;
@@ -162,8 +164,8 @@ function setUpGame() {
     var playerField = new Field(playerDeck);
     var computerField = new Field(computerDeck);
 
-    var player1 = new Player("nanter", playerField);
-    var playerCom = new Player("com", computerField);
+    var player1 = new Player("nanter", playerField,true);
+    var playerCom = new Player("com", computerField,false);
     console.log(player1);
     console.log(playerCom);
     players.push(player1);
@@ -180,11 +182,53 @@ var playerCom = players[1];
 playerOne.displayCards();
 playerCom.displayCards();
 
-function clickHandp1m() {
-    console.log(playerOne.field.hand[0].name);
-    var toAdd=playerOne.field.hand.splice(0,1);
-    playerOne.field.monsters.push(toAdd[0]);
-    console.log(playerOne.field.hand[0].name);
-    console.log(toAdd[0].name);
-    playerOne.showOneCard("mPl1", 0);
+function makeClicker(clicked_id) {
+    var theFunctionToReturn;
+    if(clicked_id==="handPl1"){
+        theFunctionToReturn=function () {
+            console.log(playerOne.field.hand[0].name);
+            var toAdd=playerOne.field.hand.splice(0,1);
+            playerOne.field.monsters.push(toAdd[0]);
+            console.log(playerOne.field.hand[0].name);
+            console.log(toAdd[0].name);
+            playerOne.showOneCard("mPl1", 0);
+        }
+    }else if (clicked_id==="handPl2"){
+        theFunctionToReturn=function () {
+            console.log(playerOne.field.hand[1].name);
+            var toAdd=playerOne.field.hand.splice(1,1);
+            playerOne.field.monsters.push(toAdd[0]);
+            console.log(playerOne.field.hand[1].name);
+            console.log(toAdd[0].name);
+            playerOne.showOneCard("mPl1", 1);
+        }
+
+    }else if (clicked_id==="handPl3"){
+        theFunctionToReturn=function () {
+            console.log(playerOne.field.hand[2].name);
+            var toAdd=playerOne.field.hand.splice(2,1);
+            playerOne.field.monsters.push(toAdd[0]);
+            console.log(playerOne.field.hand[2].name);
+            console.log(toAdd[0].name);
+            playerOne.showOneCard("mPl1", 2);
+        }
+
+    }else{
+        theFunctionToReturn=function () {
+            console.log("empty click function");
+        }
+    }
+    return theFunctionToReturn;
+}
+function clickHandPlayer(eventO) {
+    console.log("clicked: "+eventO);
+    if(playerOne.buttonsActive){
+
+        var clicker=makeClicker(eventO);
+
+        clicker();
+        playerOne.buttonsActive=false;
+        playerCom.buttonsActive=true;
+    }
+
 }
