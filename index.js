@@ -117,6 +117,16 @@ function Player(name, field,buttonActivity) {
     this.lifepoints=10;
     this.buttonsActive=buttonActivity;
 
+    this.displayLP=function () {
+        var screen;
+        if(this.name==="com"){
+            screen=document.getElementById("lpCom");
+        }else{
+            screen=document.getElementById("lpPlayer");
+        }
+        screen.innerHTML=this.lifepoints;
+    }
+
     this.showOneCard = function (id, index) {
         var slot = document.getElementById(id);
         var name = this.field.hand[index].name;
@@ -128,12 +138,15 @@ function Player(name, field,buttonActivity) {
             this.showOneCard("handCom1", 0);
             this.showOneCard("handCom2", 1);
             this.showOneCard("handCom3", 2);
+            console.log("new cards added to hand");
         } else {
             this.showOneCard("handPl1", 0);
             this.showOneCard("handPl2", 1);
             this.showOneCard("handPl3", 2);
+            console.log("new cards added to hand");
 
         }
+
     }
 }
 
@@ -180,7 +193,51 @@ var players = setUpGame();
 var playerOne = players[0];
 var playerCom = players[1];
 playerOne.displayCards();
+playerOne.displayLP();
 playerCom.displayCards();
+playerCom.displayLP();
+runGame();
+
+function checkLifePoints() {
+    if(playerOne.lifepoints==0 && playerCom.lifepoints==0){
+        console.log("its a draw");
+    }else if(playerOne.lifepoints==0){
+        console.log("Com Won The Battle");
+    }else if(playerCom.lifepoints==0){
+        console.log("You Won The Battle");
+    }else{
+        console.log("game goes on!");
+    }
+}
+function reDraw(player) {
+    var lengthOfArray=player.field.hand.length;
+    console.log(lengthOfArray+" length of hand");
+    for(var i=0;i<lengthOfArray;i++){
+        if(player.field.hand[0]===undefined || player.field.hand[0]===null){
+            console.log("empty slot");
+        }else{
+            console.log(player.field.hand[0].name+" returned to deck.");
+            player.field.deck.push(player.field.hand.splice(0,1)[0]);
+
+        }
+    }
+    player.field.shuffledeck();
+    console.log("6");
+    player.displayCards();
+    console.log("7");
+    console.log("redraw for"+player.name+ "happened");
+}
+function runGame() {
+    checkLifePoints();
+    console.log("1");
+    reDraw(playerOne);
+    console.log("2");
+    reDraw(playerCom);
+    console.log("3");
+    makeMove();
+    makeBattle();
+    switchTurns();
+}
 
 function makeClicker(clicked_id) {
     var theFunctionToReturn;
