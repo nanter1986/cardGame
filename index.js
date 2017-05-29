@@ -83,8 +83,6 @@ function Field(deck) {
     this.hand[0] = this.deck.shift();
     this.hand[1] = this.deck.shift();
     this.hand[2] = this.deck.shift();
-    this.hand[3] = this.deck.shift();
-    this.hand[4] = this.deck.shift();
     for (var i = 0; i < this.hand.length; i++) {
         console.log(i + " " + this.hand[i].name);
 
@@ -128,6 +126,7 @@ function Player(name, field,buttonActivity) {
     }
 
     this.showOneCard = function (id, index) {
+        console.log(index);
         var slot = document.getElementById(id);
         var name = this.field.hand[index].name;
         var attack = this.field.hand[index].attack;
@@ -223,17 +222,21 @@ function reDraw(player) {
         }
     }
     player.field.shuffledeck();
+    player.field.hand[0]=player.field.deck.shift();
+    player.field.hand[1]=player.field.deck.shift();
+    player.field.hand[2]=player.field.deck.shift();
     console.log(player);
     player.displayCards();
-    console.log("7");
-    console.log("redraw for"+player.name+ "happened");
+    for (var i = 0; i < player.field.hand.length; i++) {
+        console.log(i + " " + player.field.hand[i].name);
+
+    }
+    console.log("redraw for "+player.name+ " happened");
 }
 function runGame() {
     checkLifePoints();
     reDraw(playerOne);
-    console.log("2");
     reDraw(playerCom);
-    console.log("3");
     makeMove();
     makeBattle();
     switchTurns();
@@ -275,6 +278,7 @@ function makeClicker(clicked_id) {
             console.log("empty click function");
         }
     }
+    document.getElementById(clicked_id).innerHTML="   ";
     return theFunctionToReturn;
 }
 function clickHandPlayer(eventO) {
