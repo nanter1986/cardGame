@@ -134,6 +134,7 @@ function Player(name, field,buttonActivity) {
         slot.innerHTML = name + "<br>" + attack;
     };
     this.displayCards = function () {
+        console.log(this.name);
         if (this.name == "com") {
             this.showOneCard("handCom1", 0);
             this.showOneCard("handCom2", 1);
@@ -222,14 +223,13 @@ function reDraw(player) {
         }
     }
     player.field.shuffledeck();
-    console.log("6");
+    console.log(player);
     player.displayCards();
     console.log("7");
     console.log("redraw for"+player.name+ "happened");
 }
 function runGame() {
     checkLifePoints();
-    console.log("1");
     reDraw(playerOne);
     console.log("2");
     reDraw(playerCom);
